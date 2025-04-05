@@ -1,0 +1,29 @@
+---
+  - name: add firewall rules to managed nodes
+    hosts: all
+    tasks:
+      - name: check of insalling firewalld
+        yum:
+          name: firewalld
+          state: present
+  
+      - name: ensure if firewalld servise is enable and running
+        service:
+          name: firewalld
+          state: started
+  
+      - name: ssh rule
+        firewalld:
+          service: ssh
+          permanent: true
+          state: enabled
+  
+      - name: http rule
+        firewalld:
+          service: http
+          permanent: true
+          state: enabled
+  
+      - name: restart firewalld
+        command: firewall-cmd --reload
+  
